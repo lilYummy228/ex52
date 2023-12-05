@@ -19,13 +19,13 @@ namespace ex52
                 new Criminal("Руслан", true, 189, 92, "ГРУЗИЯ"),
             };
 
-            int height = detective.FindValue("Введите рост преступника в см: "); ;
-            int weight = detective.FindValue("Введите вес преступника в кг: ");
+            int height = detective.GetNumber("Введите рост преступника в см: "); ;
+            int weight = detective.GetNumber("Введите вес преступника в кг: ");
             string nationality = detective.FindNationality("Введите страну национальности преступника: ");
 
             detective.ShowInfo(height, weight, nationality);
 
-            var allSuspects = criminals.Where(criminal => criminal.IsUnderGuard == false && height == criminal.Height && weight == criminal.Weight 
+            var allSuspects = criminals.Where(criminal => criminal.IsUnderGuard == false && height == criminal.Height && weight == criminal.Weight
             && nationality.ToUpper() == criminal.Nationality).ToList();
 
             detective.ShowAllSuspects(allSuspects);
@@ -52,14 +52,17 @@ namespace ex52
 
     class Detective
     {
-        public int FindValue(string request)
+        public int GetNumber(string request)
         {
-            while (true)
+            int value = 0;
+
+            while (value == 0)
             {
                 Console.Write(request);
 
-                if (int.TryParse(Console.ReadLine(), out int value) && value > 0)
+                if (int.TryParse(Console.ReadLine(), out int input) && input > 0)
                 {
+                    value = input;
                     return value;
                 }
 
@@ -67,6 +70,8 @@ namespace ex52
                 Console.ReadKey();
                 Console.Clear();
             }
+
+            return value;
         }
 
         public string FindNationality(string request)
